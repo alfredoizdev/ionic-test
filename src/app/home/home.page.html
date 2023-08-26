@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> CaredFor Code Exercise </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Create a Checkin</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button routerLink="/check-in">
+          <ion-icon slot="end" name="checkbox-outline"></ion-icon>
+          Go to checkin page
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card>
+    <ion-card-header>Overview</ion-card-header>
+    <ion-card-content>
+      <ion-item
+        >Using the included capacitor geolocation and camera plugins, create a
+        page that completes a user check-in, sending an api request containing
+        the user id "1533", location information, media_id, and a text for a
+        comment.</ion-item
+      >
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>Requirements</ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item
+          >A photo button that will take a users photo, upload the photo file to
+          https://testing.caredfor.com/media. This will give a HTTP error, so
+          mock out the response as {{ "data": { "owner_id":
+          "b579b9bd-bf25-418e-a219-dd7aef410e6f", "path": "cf\/media",
+          "media_type": "image", "extension": "", "mime": "image\/png", "disk":
+          "s3", "id": "abc123", "updated_at": "2023-08-23T16:33:45.000000Z",
+          "created_at": "2023-08-23T16:33:45.000000Z", }, "status": "success"
+          }</ion-item
+        >
+        <ion-item
+          >The photo should have a preview so the user can see what they have
+          uploaded, and replace it if necessary.</ion-item
+        >
+        <ion-item
+          >A button labeled "Check In" that sends an API request to
+          https://testing.caredfor.com/check-in (this will give a HTTP error,
+          just interested in seeing the data go out.
+        </ion-item>
+        <ion-item
+          >Error messaging if the user does not enable location or access to the
+          camera.</ion-item
+        >
+        <ion-item
+          >Payload for check in - user_id, lat, lng, precision, media_id,
+          comment</ion-item
+        >
+        <ion-item>Include unit tests.</ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

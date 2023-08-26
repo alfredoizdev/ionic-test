@@ -1,0 +1,7 @@
+{
+  "name": "CaredforInterview",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
