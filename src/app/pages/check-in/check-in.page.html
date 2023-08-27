@@ -18,7 +18,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button expand="full" (click)="checkIn()">
+        <ion-button [disabled]="loading" expand="full" (click)="checkIn()">
           <ion-label class="label">
             <ion-spinner
               *ngIf="loading"
