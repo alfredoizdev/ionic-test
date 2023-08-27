@@ -12,6 +12,7 @@ import { PhotoService } from 'src/app/services/photo.service';
 })
 export class CheckInPage {
   photo?: Photo;
+  preview?: string;
   mediaInfo: any = {
     owner_id: 'b579b9bd-bf25-418e-a219-dd7aef410e6f',
     path: 'cf/media',
@@ -45,6 +46,7 @@ export class CheckInPage {
   async getPhoto() {
     try {
       this.photo = await this.photoService.getPhoto();
+      this.preview = `data:image/png;base64,${this.photo.base64String}`;
       this.mediaInfo = await lastValueFrom(
         this.apiService.uploadImage(this.photo.base64String as string)
       );
@@ -72,7 +74,6 @@ export class CheckInPage {
         this.errorMessage = e.message;
       }
     } else {
-      console.log('@HERE ERROR', this.coords);
       this.errorMessage = 'No coordinates found';
     }
   }

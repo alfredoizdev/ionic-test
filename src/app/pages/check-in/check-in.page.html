@@ -10,10 +10,10 @@
       <ion-title size="large">Create a Checkin</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-grid *ngIf="photo?.webPath">
+  <ion-grid *ngIf="preview">
     <ion-row>
       <ion-col>
-        <ion-img [src]="photo?.webPath"></ion-img>
+        <ion-img [src]="preview"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -27,7 +27,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-grid *ngIf="!photo?.webPath">
+  <ion-grid *ngIf="!preview">
     <ion-row>
       <ion-col>
         <ion-title>Take your picture</ion-title>

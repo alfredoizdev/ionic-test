@@ -7,8 +7,8 @@ import { Geolocation, Position } from '@capacitor/geolocation';
 export class GeolocationService {
   constructor() {}
 
-  async getCurrentPosition(): Promise<Position> {
+  async getCurrentPosition(): Promise<any> {
     const coordinates = await Geolocation.getCurrentPosition();
-    return coordinates;
+    return coordinates.coords;
   }
 }

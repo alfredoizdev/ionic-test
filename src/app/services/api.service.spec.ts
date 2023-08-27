@@ -4,6 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ApiService } from './api.service';
+import { environment } from 'src/environments/environment';
 
 describe('ApiService', () => {
   let service: ApiService;
@@ -36,7 +37,7 @@ describe('ApiService', () => {
         expect(response).toEqual(dummyResponse);
       });
 
-      const req = httpMock.expectOne('https://testing.caredfor.com/media');
+      const req = httpMock.expectOne(`${environment.baseUrl}/media`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body.image).toBe(image);
       req.flush(dummyResponse);
@@ -52,7 +53,7 @@ describe('ApiService', () => {
         expect(response).toEqual(dummyResponse);
       });
 
-      const req = httpMock.expectOne('https://testing.caredfor.com/check-in');
+      const req = httpMock.expectOne(`${environment.baseUrl}/check-in`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(data);
       req.flush(dummyResponse);

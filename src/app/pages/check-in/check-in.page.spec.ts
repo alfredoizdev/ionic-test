@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
-import { Observable, Subject, of, throwError } from 'rxjs';
+import { IonicModule, LoadingController } from '@ionic/angular';
+import { of, throwError } from 'rxjs';
 import { CheckInPage } from './check-in.page';
 import { PhotoService } from 'src/app/services/photo.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -35,6 +35,7 @@ describe('CheckInPage', () => {
     });
 
     fixture = TestBed.createComponent(CheckInPage);
+
     component = fixture.componentInstance;
 
     geoService = TestBed.inject(GeolocationService);
@@ -44,9 +45,29 @@ describe('CheckInPage', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('getPhoto', () => {
+    it('should set photo and preview properties when photo is captured', async () => {
+      const mockPhoto = {
+        base64String: 'mockBase64String',
+      };
+      (mockPhotoService.getPhoto as jasmine.Spy).and.returnValue(
+        Promise.resolve(mockPhoto)
+      );
+
+      await component.getPhoto();
+
+      expect(component.photo).toEqual(mockPhoto as any);
+      expect(component.preview).toContain(
+        'data:image/png;base64,' + mockPhoto.base64String
+      );
+    });
+  });
+
   it('should get a photo and upload it', async () => {
     await component.getPhoto();
+
     expect(mockPhotoService.getPhoto).toHaveBeenCalled();
+
     expect(mockApiService.uploadImage).toHaveBeenCalledWith(
       component.photo?.base64String
     );
