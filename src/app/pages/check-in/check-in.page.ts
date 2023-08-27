@@ -55,11 +55,12 @@ export class CheckInPage {
   }
 
   async checkIn() {
+    this.coords = await this.geolocationService.getCurrentPosition();
     if (this.coords) {
       try {
         await lastValueFrom(
           this.apiService.checkIn({
-            user_id: 1533,
+            user_id: 1522,
             lat: this.coords?.latitude,
             lng: this.coords?.longitude,
             precision: this.coords?.accuracy,
@@ -71,6 +72,7 @@ export class CheckInPage {
         this.errorMessage = e.message;
       }
     } else {
+      console.log('@HERE ERROR', this.coords);
       this.errorMessage = 'No coordinates found';
     }
   }

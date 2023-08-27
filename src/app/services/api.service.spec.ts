@@ -20,45 +20,42 @@ describe('ApiService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify(); // Verify that no outstanding requests are present
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should upload an image', () => {
-    const image = 'base64-encoded-image';
+  describe('#uploadImage', () => {
+    it('should return an Observable<Object>', () => {
+      const dummyResponse = { status: 'success' };
+      const image = 'test_image_string';
 
-    service.uploadImage(image).subscribe((response) => {
-      expect(response).toBeTruthy();
+      service.uploadImage(image).subscribe((response) => {
+        expect(response).toEqual(dummyResponse);
+      });
+
+      const req = httpMock.expectOne('https://testing.caredfor.com/media');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body.image).toBe(image);
+      req.flush(dummyResponse);
     });
-
-    const req = httpMock.expectOne('https://testing.caredfor.com/media');
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ image });
-
-    req.flush({}); // Simulate a successful response
   });
 
-  it('should check in', () => {
-    const data = {
-      user_id: 123,
-      lat: 45.678,
-      lng: -90.123,
-      precision: 5,
-      media_id: 'abc123',
-      comment: 'This is a comment',
-    };
+  describe('#checkIn', () => {
+    it('should return an Observable<Object>', () => {
+      const dummyResponse = { status: 'checked_in' };
+      const data = { testKey: 'testValue' };
 
-    service.checkIn(data).subscribe((response) => {
-      expect(response).toBeTruthy();
+      service.checkIn(data).subscribe((response) => {
+        expect(response).toEqual(dummyResponse);
+      });
+
+      const req = httpMock.expectOne('https://testing.caredfor.com/check-in');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(data);
+      req.flush(dummyResponse);
     });
-
-    const req = httpMock.expectOne('https://testing.caredfor.com/check-in');
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(data);
-
-    req.flush({}); // Simulate a successful response
   });
 });

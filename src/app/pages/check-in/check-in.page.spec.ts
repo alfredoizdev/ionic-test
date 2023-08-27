@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { of } from 'rxjs';
+import { Observable, Subject, of, throwError } from 'rxjs';
 import { CheckInPage } from './check-in.page';
 import { PhotoService } from 'src/app/services/photo.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -11,7 +11,7 @@ describe('CheckInPage', () => {
   let fixture: ComponentFixture<CheckInPage>;
   let mockPhotoService: Partial<PhotoService>;
   let mockApiService: Partial<ApiService>;
-  let mockGeolocationService: any;
+  let geoService: GeolocationService;
 
   beforeEach(() => {
     mockPhotoService = {
@@ -25,28 +25,19 @@ describe('CheckInPage', () => {
       checkIn: jasmine.createSpy('checkIn').and.returnValue(of({})),
     };
 
-    mockGeolocationService = {
-      getCurrentPosition: jasmine
-        .createSpy('getCurrentPosition')
-        .and.returnValue(
-          Promise.resolve({
-            coords: { latitude: 123, longitude: 456, accuracy: 10 },
-          })
-        ),
-    };
-
     TestBed.configureTestingModule({
       declarations: [CheckInPage],
       providers: [
         { provide: PhotoService, useValue: mockPhotoService },
         { provide: ApiService, useValue: mockApiService },
-        { provide: GeolocationService, useValue: mockGeolocationService },
       ],
       imports: [IonicModule.forRoot()],
     });
 
     fixture = TestBed.createComponent(CheckInPage);
     component = fixture.componentInstance;
+
+    geoService = TestBed.inject(GeolocationService);
   });
 
   it('should create', () => {
@@ -61,22 +52,68 @@ describe('CheckInPage', () => {
     );
   });
 
+  it('should handle photo fetching error', async () => {
+    const errorMessage = 'Failed to fetch photo';
+    (mockPhotoService.getPhoto as jasmine.Spy).and.returnValue(
+      Promise.reject(new Error(errorMessage))
+    );
+
+    await component.getPhoto();
+
+    expect(component.errorMessage).toBe(errorMessage);
+  });
+
   it('should get location and check in', async () => {
-    await component.checkIn();
-    expect(mockGeolocationService.getCurrentPosition).toHaveBeenCalled();
-    expect(mockApiService.checkIn).toHaveBeenCalledWith({
-      user_id: 1533,
+    const expectedValue = {
+      user_id: 1522,
       lat: 123,
       lng: 456,
       precision: 10,
-      media_id: component.mediaInfo.id,
+      media_id: 'abc123',
       comment: 'This is a comment',
-    });
+    };
+
+    spyOn(geoService, 'getCurrentPosition').and.returnValue(
+      Promise.resolve({ latitude: 123, longitude: 456, accuracy: 10 }) as any
+    );
+
+    await component.checkIn();
+
+    expect(mockApiService.checkIn).toHaveBeenCalledWith(expectedValue);
   });
 
   it('should handle location error', async () => {
-    mockGeolocationService.getCurrentPosition.and.throwError('Location error');
+    spyOn(geoService, 'getCurrentPosition').and.returnValue(
+      Promise.reject(new Error('Location error occurred!'))
+    );
+
     await component.getLocation();
-    expect(component.errorMessage).toBe('Location error');
+
+    expect(component.errorMessage).toBe('Location error occurred!');
+  });
+
+  it('should handle API error during check-in', async () => {
+    spyOn(geoService, 'getCurrentPosition').and.returnValue(
+      Promise.resolve({ latitude: 123, longitude: 456, accuracy: 10 }) as any
+    );
+    const errorMessage = 'API error occurred!';
+
+    (mockApiService.checkIn as jasmine.Spy).and.returnValue(
+      throwError(() => new Error(errorMessage))
+    );
+
+    await component.checkIn();
+
+    expect(component.errorMessage).toBe(errorMessage);
+  });
+
+  it('should set error message if geolocation is not available', async () => {
+    spyOn(geoService, 'getCurrentPosition').and.returnValue(
+      Promise.resolve(null) as any
+    );
+
+    await component.checkIn();
+
+    expect(component.errorMessage).toBe('No coordinates found');
   });
 });
