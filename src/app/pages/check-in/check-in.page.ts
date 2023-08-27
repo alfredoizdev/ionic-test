@@ -12,6 +12,7 @@ import { PhotoService } from 'src/app/services/photo.service';
 })
 export class CheckInPage {
   photo?: Photo;
+  loading = false;
   preview?: string;
   mediaInfo: any = {
     owner_id: 'b579b9bd-bf25-418e-a219-dd7aef410e6f',
@@ -57,6 +58,7 @@ export class CheckInPage {
   }
 
   async checkIn() {
+    this.loading = true;
     this.coords = await this.geolocationService.getCurrentPosition();
     if (this.coords) {
       try {
@@ -70,11 +72,14 @@ export class CheckInPage {
             comment: 'This is a comment',
           })
         );
+        this.loading = false;
       } catch (e: any) {
         this.errorMessage = e.message;
+        this.loading = false;
       }
     } else {
       this.errorMessage = 'No coordinates found';
+      this.loading = false;
     }
   }
 }

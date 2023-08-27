@@ -18,7 +18,16 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button expand="full" (click)="checkIn()">Check In</ion-button>
+        <ion-button expand="full" (click)="checkIn()">
+          <ion-label class="label">
+            <ion-spinner
+              *ngIf="loading"
+              name="circles"
+              class="spinner-large"
+            ></ion-spinner>
+            Check In</ion-label
+          >
+        </ion-button>
       </ion-col>
       <ion-col>
         <ion-button expand="full" color="success" (click)="getPhoto()"
