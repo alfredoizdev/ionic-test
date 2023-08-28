@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content class="bg-cont" [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">thanks</ion-title>
@@ -22,7 +22,7 @@
         <p>
           I was able to complete the requirements by using the capacitor plugins
           (geolocation and camara) Also, I was able to send the data and show
-          error messages, test unit as expected by the test.
+          error messages,added test unit as expected.
         </p>
         <h2>Resume</h2>
         <p>
@@ -30,27 +30,28 @@
           position, you guys have a great culture and awesome team I would like
           to be part of, I can bring my experience and hard work to the team. It
           would help to have some feedback even if I'm not selected for this
-          position. It would help me a lot. Thanks
+          position. Thanks
         </p>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-grid>
+  <app-wavy></app-wavy>
+  <ion-grid class="ion-grid-footer">
     <ion-row>
       <ion-col class="ion-center">
-        <ion-fab-button routerLink="/home">
+        <ion-fab-button routerLink="/home" color="light">
           <ion-icon name="home"></ion-icon>
         </ion-fab-button>
       </ion-col>
       <ion-col class="ion-center">
-        <ion-fab-button routerLink="/check-in">
+        <ion-fab-button routerLink="/check-in" color="light">
           <ion-icon name="checkbox-outline"></ion-icon>
         </ion-fab-button>
       </ion-col>
       <ion-col class="ion-center">
-        <ion-fab-button routerLink="/thanks">
+        <ion-fab-button routerLink="/thanks" color="light">
           <ion-icon name="star-outline"></ion-icon>
         </ion-fab-button>
       </ion-col>

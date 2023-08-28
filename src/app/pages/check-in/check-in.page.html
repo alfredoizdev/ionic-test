@@ -39,32 +39,37 @@
   <ion-grid *ngIf="!preview">
     <ion-row>
       <ion-col>
-        <ion-title>Take your picture</ion-title>
+        <ion-card>
+          <ion-card-content>
+            <ion-title>Take your picture</ion-title>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
   <ion-toast
     [isOpen]="errorMessage !== ''"
     [message]="errorMessage"
-    [duration]="6000"
+    [duration]="5000"
     (didDismiss)="errorMessage = ''"
   ></ion-toast>
 </ion-content>
 <ion-footer>
-  <ion-grid>
+  <app-wavy></app-wavy>
+  <ion-grid class="ion-grid-footer">
     <ion-row>
       <ion-col class="ion-center">
-        <ion-fab-button routerLink="/home">
+        <ion-fab-button routerLink="/home" color="light">
           <ion-icon name="home"></ion-icon>
         </ion-fab-button>
       </ion-col>
       <ion-col class="ion-center">
-        <ion-fab-button (click)="getPhoto()">
+        <ion-fab-button (click)="getPhoto()" color="light">
           <ion-icon name="camera"></ion-icon>
         </ion-fab-button>
       </ion-col>
       <ion-col class="ion-center">
-        <ion-fab-button routerLink="/thanks">
+        <ion-fab-button routerLink="/thanks" color="light">
           <ion-icon name="star-outline"></ion-icon>
         </ion-fab-button>
       </ion-col>
