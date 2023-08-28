@@ -8,6 +8,6 @@ import { WavyComponent } from './wavy.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [WavyComponent],
+  declarations: [],
 })
 export class CheckInPageModule {}

@@ -7,9 +7,12 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { WavyComponent } from './components/wavy/wavy.component';
+import { CheckInPage } from './pages/check-in/check-in.page';
+import { ThanksPage } from './pages/thanks/thanks.page';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, WavyComponent, CheckInPage, ThanksPage],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
