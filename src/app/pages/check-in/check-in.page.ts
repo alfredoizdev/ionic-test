@@ -4,6 +4,8 @@ import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { GeolocationService } from 'src/app/services/geolocation.service';
 import { PhotoService } from 'src/app/services/photo.service';
+import { ICoords } from 'src/interfaces/Geolocation';
+import { IMedia } from 'src/interfaces/Media';
 
 @Component({
   selector: 'app-check-in',
@@ -14,7 +16,7 @@ export class CheckInPage {
   photo?: Photo;
   loading = false;
   preview?: string;
-  mediaInfo: any = {
+  mediaInfo: IMedia = {
     owner_id: 'b579b9bd-bf25-418e-a219-dd7aef410e6f',
     path: 'cf/media',
     media_type: 'image',
@@ -25,7 +27,7 @@ export class CheckInPage {
     updated_at: '2023-08-23T16:33:45.000000Z',
     created_at: '2023-08-23T16:33:45.000000Z',
   };
-  coords: any;
+  coords?: ICoords;
   errorMessage = '';
 
   constructor(
@@ -60,8 +62,8 @@ export class CheckInPage {
   async checkIn() {
     this.loading = true;
     this.coords = await this.geolocationService.getCurrentPosition();
-    if (this.coords) {
-      try {
+    try {
+      if (this.coords) {
         await lastValueFrom(
           this.apiService.checkIn({
             user_id: 1522,
@@ -72,13 +74,12 @@ export class CheckInPage {
             comment: 'This is a comment',
           })
         );
-        this.loading = false;
-      } catch (e: any) {
-        this.errorMessage = e.message;
-        this.loading = false;
+      } else {
+        this.errorMessage = 'No coordinates found';
       }
-    } else {
-      this.errorMessage = 'No coordinates found';
+    } catch (e: any) {
+      this.errorMessage = e.message;
+    } finally {
       this.loading = false;
     }
   }
