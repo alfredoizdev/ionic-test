@@ -30,7 +30,7 @@ describe('ApiService', () => {
 
   describe('#uploadImage', () => {
     it('should return an Observable<Object>', () => {
-      const dummyResponse = { status: 'success' };
+      const dummyResponse: any = { status: 'success' };
       const image = 'test_image_string';
 
       service.uploadImage(image).subscribe((response) => {
