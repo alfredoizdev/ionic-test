@@ -61,8 +61,8 @@ export class CheckInPage {
 
   async checkIn() {
     this.loading = true;
-    this.coords = await this.geolocationService.getCurrentPosition();
     try {
+      this.coords = await this.geolocationService.getCurrentPosition();
       if (this.coords) {
         await lastValueFrom(
           this.apiService.checkIn({
